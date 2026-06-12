@@ -1,4 +1,3 @@
-/* CC Switch Styles */
 * {
   margin: 0;
   padding: 0;
@@ -29,7 +28,6 @@ body {
   flex-direction: column;
 }
 
-/* 夜间模式 */
 body.dark-mode {
   --bg-primary: #1a1a1a;
   --bg-secondary: #121212;
@@ -53,7 +51,6 @@ body.dark-mode {
   background: var(--bg-primary);
 }
 
-/* 顶部导航栏 */
 .header {
   display: flex;
   justify-content: space-between;
@@ -135,7 +132,6 @@ body.dark-mode {
   height: 18px;
 }
 
-/* 主内容区域 */
 .main-content {
   flex: 1;
   padding: 20px;
@@ -148,7 +144,6 @@ body.dark-mode {
   gap: 12px;
 }
 
-/* 配置项卡片 */
 .config-card {
   display: flex;
   align-items: center;
@@ -163,11 +158,6 @@ body.dark-mode {
 .config-card:hover {
   border-color: var(--accent-color);
   box-shadow: 0 2px 12px rgba(0, 122, 255, 0.1);
-}
-
-.config-card.active {
-  background: rgba(0, 122, 255, 0.1);
-  border-color: var(--accent-color);
 }
 
 .config-card.selected {
@@ -186,29 +176,37 @@ body.dark-mode {
   animation: pulse 2s infinite;
 }
 
-@keyframes pulse {
-  0%, 100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.6;
-  }
+.config-card.dragging {
+  opacity: 0.4;
+  border-style: dashed;
 }
 
-.config-card:hover .config-actions {
-  opacity: 1;
-  pointer-events: auto;
+.config-card.drag-over {
+  border-color: var(--accent-color);
+  border-width: 2px;
+  box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.15);
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
 }
 
 .config-drag-handle {
   margin-right: 12px;
   cursor: grab;
   color: var(--text-muted);
-  padding: 4px;
+  padding: 4px 6px;
+  font-size: 16px;
+  user-select: none;
 }
 
 .config-drag-handle:hover {
   color: var(--text-secondary);
+}
+
+.config-card:active .config-drag-handle {
+  cursor: grabbing;
 }
 
 .config-icon {
@@ -252,26 +250,23 @@ body.dark-mode {
   color: #856404;
 }
 
-/* 操作按钮组 */
 .config-actions {
   display: flex;
   align-items: center;
-  gap: 8px;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.2s ease;
+  gap: 6px;
 }
 
 .action-btn {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
+  width: 30px;
+  height: 30px;
   border: none;
-  border-radius: 8px;
+  border-radius: 6px;
   cursor: pointer;
-  transition: all 0.2s ease;
+  font-size: 14px;
+  transition: all 0.15s ease;
 }
 
 .action-btn.enable {
@@ -295,27 +290,20 @@ body.dark-mode {
 .action-btn.copy {
   background: var(--bg-tertiary);
   color: var(--text-secondary);
+  border: 1px solid var(--border-color);
 }
 
 .action-btn.copy:hover {
   background: var(--border-color);
 }
 
-.action-btn.up {
+.action-btn.up, .action-btn.down {
   background: var(--bg-tertiary);
   color: var(--text-secondary);
+  border: 1px solid var(--border-color);
 }
 
-.action-btn.up:hover {
-  background: var(--border-color);
-}
-
-.action-btn.down {
-  background: var(--bg-tertiary);
-  color: var(--text-secondary);
-}
-
-.action-btn.down:hover {
+.action-btn.up:hover, .action-btn.down:hover {
   background: var(--border-color);
 }
 
@@ -328,12 +316,6 @@ body.dark-mode {
   background: #cc0000;
 }
 
-.action-btn svg {
-  width: 16px;
-  height: 16px;
-}
-
-/* 弹窗 */
 .modal-overlay {
   display: none;
   position: fixed;
@@ -369,7 +351,6 @@ body.dark-mode {
   max-height: 80vh;
 }
 
-/* 文件夹输入组 */
 .folder-input-group {
   display: flex;
   gap: 8px;
@@ -394,7 +375,6 @@ body.dark-mode {
   background: #106ebe;
 }
 
-/* BAT文件列表 */
 .bat-list {
   max-height: 150px;
   overflow-y: auto;
@@ -454,7 +434,6 @@ body.dark-mode {
   margin-bottom: 0;
 }
 
-/* 运行按钮样式 */
 .run-bat-btn {
   background: #00c853;
   color: white;
@@ -475,7 +454,6 @@ body.dark-mode {
   font-size: 13px;
 }
 
-/* 脚本控制按钮 */
 .control-btn {
   padding: 10px 20px;
   border-radius: 5px;
@@ -503,11 +481,6 @@ body.dark-mode {
   background: #00b84d;
 }
 
-.start-btn:active:not(:disabled),
-.start-btn.clicked {
-  background: #009942;
-}
-
 .stop-btn {
   background: var(--danger-color);
   color: white;
@@ -515,11 +488,6 @@ body.dark-mode {
 
 .stop-btn:hover:not(:disabled) {
   background: #cc0000;
-}
-
-.stop-btn:active:not(:disabled),
-.stop-btn.clicked {
-  background: #aa0000;
 }
 
 .control-btn:disabled {
@@ -531,7 +499,6 @@ body.dark-mode {
   transform: scale(0.98);
 }
 
-/* 脚本操作按钮 */
 .script-actions {
   display: flex;
   gap: 8px;
@@ -570,7 +537,6 @@ body.dark-mode {
   cursor: not-allowed;
 }
 
-/* 图标选择器 */
 .icon-picker {
   display: flex;
   flex-wrap: wrap;
@@ -737,7 +703,6 @@ body.dark-mode {
   background: #0066cc;
 }
 
-/* 空状态 */
 .empty-state {
   display: flex;
   flex-direction: column;
@@ -747,17 +712,10 @@ body.dark-mode {
   color: #999999;
 }
 
-.empty-state svg {
-  width: 64px;
-  height: 64px;
-  margin-bottom: 16px;
-}
-
 .empty-state p {
   font-size: 14px;
 }
 
-/* 主题设置样式 */
 .radio-group {
   display: flex;
   flex-direction: column;
@@ -825,7 +783,6 @@ body.dark-mode {
   display: block;
 }
 
-/* 响应式 */
 @media (max-width: 768px) {
   .header {
     padding: 10px 16px;
@@ -837,6 +794,13 @@ body.dark-mode {
   
   .config-card {
     padding: 12px;
+    flex-wrap: wrap;
+  }
+  
+  .config-actions {
+    width: 100%;
+    justify-content: flex-end;
+    margin-top: 8px;
   }
   
   .config-icon {

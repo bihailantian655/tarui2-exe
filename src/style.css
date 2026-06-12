@@ -1,0 +1,860 @@
+/* CC Switch Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --bg-primary: #ffffff;
+  --bg-secondary: #f5f5f5;
+  --bg-tertiary: #fafafa;
+  --text-primary: #333333;
+  --text-secondary: #666666;
+  --text-muted: #999999;
+  --border-color: #e0e0e0;
+  --accent-color: #007aff;
+  --accent-hover: #0066cc;
+  --success-color: #00c853;
+  --danger-color: #ff4444;
+  --card-bg: #ffffff;
+  --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  background: var(--bg-secondary);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 夜间模式 */
+body.dark-mode {
+  --bg-primary: #1a1a1a;
+  --bg-secondary: #121212;
+  --bg-tertiary: #242424;
+  --text-primary: #ffffff;
+  --text-secondary: #b3b3b3;
+  --text-muted: #666666;
+  --border-color: #333333;
+  --accent-color: #0099ff;
+  --accent-hover: #0077cc;
+  --success-color: #00d65a;
+  --danger-color: #ff5555;
+  --card-bg: #242424;
+  --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: var(--bg-primary);
+}
+
+/* 顶部导航栏 */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 20px;
+  background: var(--bg-primary);
+  border-bottom: 1px solid var(--border-color);
+  box-shadow: var(--card-shadow);
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.app-name {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--accent-color);
+}
+
+.nav-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: none;
+  background: transparent;
+  border-radius: 8px;
+  cursor: pointer;
+  color: var(--text-secondary);
+  transition: all 0.2s ease;
+}
+
+.nav-btn:hover {
+  background: var(--bg-tertiary);
+}
+
+.nav-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+.header-center {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+}
+
+.add-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: none;
+  background: var(--accent-color);
+  border-radius: 50%;
+  cursor: pointer;
+  color: #ffffff;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0, 122, 255, 0.3);
+}
+
+.add-btn:hover {
+  background: var(--accent-hover);
+  transform: scale(1.05);
+}
+
+.add-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* 主内容区域 */
+.main-content {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.config-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* 配置项卡片 */
+.config-card {
+  display: flex;
+  align-items: center;
+  padding: 16px;
+  background: var(--card-bg);
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.config-card:hover {
+  border-color: var(--accent-color);
+  box-shadow: 0 2px 12px rgba(0, 122, 255, 0.1);
+}
+
+.config-card.active {
+  background: rgba(0, 122, 255, 0.1);
+  border-color: var(--accent-color);
+}
+
+.config-card.selected {
+  background: rgba(0, 122, 255, 0.08);
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 2px rgba(0, 122, 255, 0.2);
+}
+
+.config-card.running {
+  background: rgba(0, 200, 83, 0.15);
+  border-color: var(--success-color);
+  box-shadow: 0 0 0 2px rgba(0, 200, 83, 0.3);
+}
+
+.config-card.running .config-icon {
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+.config-card:hover .config-actions {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.config-drag-handle {
+  margin-right: 12px;
+  cursor: grab;
+  color: var(--text-muted);
+  padding: 4px;
+}
+
+.config-drag-handle:hover {
+  color: var(--text-secondary);
+}
+
+.config-icon {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  background: var(--bg-tertiary);
+  border-radius: 10px;
+  margin-right: 12px;
+}
+
+.config-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.config-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.config-url {
+  font-size: 12px;
+  color: var(--text-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.config-status {
+  margin-right: 12px;
+  padding: 4px 10px;
+  font-size: 11px;
+  border-radius: 12px;
+  background: rgba(255, 243, 205, 0.8);
+  color: #856404;
+}
+
+/* 操作按钮组 */
+.config-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+.action-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.action-btn.enable {
+  background: var(--success-color);
+  color: #ffffff;
+}
+
+.action-btn.enable:hover {
+  background: #00b84d;
+}
+
+.action-btn.edit {
+  background: var(--accent-color);
+  color: #ffffff;
+}
+
+.action-btn.edit:hover {
+  background: var(--accent-hover);
+}
+
+.action-btn.copy {
+  background: var(--bg-tertiary);
+  color: var(--text-secondary);
+}
+
+.action-btn.copy:hover {
+  background: var(--border-color);
+}
+
+.action-btn.up {
+  background: var(--bg-tertiary);
+  color: var(--text-secondary);
+}
+
+.action-btn.up:hover {
+  background: var(--border-color);
+}
+
+.action-btn.down {
+  background: var(--bg-tertiary);
+  color: var(--text-secondary);
+}
+
+.action-btn.down:hover {
+  background: var(--border-color);
+}
+
+.action-btn.delete {
+  background: var(--danger-color);
+  color: #ffffff;
+}
+
+.action-btn.delete:hover {
+  background: #cc0000;
+}
+
+.action-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* 弹窗 */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-overlay.show {
+  display: flex;
+}
+
+.modal {
+  background: var(--card-bg);
+  border-radius: 16px;
+  width: 90%;
+  max-width: 480px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  min-width: 300px;
+  min-height: 200px;
+}
+
+.modal.resizable {
+  resize: both;
+  overflow: auto;
+  max-width: 800px;
+  max-height: 80vh;
+}
+
+/* 文件夹输入组 */
+.folder-input-group {
+  display: flex;
+  gap: 8px;
+}
+
+.folder-input-group input {
+  flex: 1;
+}
+
+.btn-refresh {
+  padding: 8px 12px;
+  background: var(--accent-color);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background 0.2s;
+}
+
+.btn-refresh:hover {
+  background: #106ebe;
+}
+
+/* BAT文件列表 */
+.bat-list {
+  max-height: 150px;
+  overflow-y: auto;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 8px;
+  background: #fafafa;
+}
+
+.bat-list-empty {
+  color: #999;
+  text-align: center;
+  padding: 20px;
+  font-size: 13px;
+}
+
+.bat-item {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  justify-content: flex-start;
+  padding: 8px 12px;
+  margin: 4px 0;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.bat-item:hover {
+  background: #e8f4fd;
+}
+
+.bat-item.selected {
+  background: #0078d4;
+  color: white;
+}
+
+.bat-item input[type="radio"] {
+  cursor: pointer;
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  padding: 0;
+}
+
+.bat-item label {
+  cursor: pointer;
+  flex: 1;
+  font-size: 13px;
+  font-weight: 400;
+  color: #333333;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 80px;
+  margin-bottom: 0;
+}
+
+/* 运行按钮样式 */
+.run-bat-btn {
+  background: #00c853;
+  color: white;
+  padding: 8px 20px;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+  width: auto;
+}
+
+.run-bat-btn:hover {
+  background: #00b84d;
+}
+
+.run-bat-btn .btn-text {
+  font-size: 13px;
+}
+
+/* 脚本控制按钮 */
+.control-btn {
+  padding: 10px 20px;
+  border-radius: 5px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 500;
+  font-size: 13px;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  margin: 0 8px;
+  width: auto;
+}
+
+.control-btn .btn-text {
+  font-size: 13px;
+}
+
+.start-btn {
+  background: var(--success-color);
+  color: white;
+}
+
+.start-btn:hover:not(:disabled) {
+  background: #00b84d;
+}
+
+.start-btn:active:not(:disabled),
+.start-btn.clicked {
+  background: #009942;
+}
+
+.stop-btn {
+  background: var(--danger-color);
+  color: white;
+}
+
+.stop-btn:hover:not(:disabled) {
+  background: #cc0000;
+}
+
+.stop-btn:active:not(:disabled),
+.stop-btn.clicked {
+  background: #aa0000;
+}
+
+.control-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.control-btn:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+/* 脚本操作按钮 */
+.script-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.btn-secondary {
+  background: #f0f0f0;
+  color: #666666;
+  padding: 8px 14px;
+  font-size: 13px;
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background: #e0e0e0;
+}
+
+.btn-secondary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-danger {
+  background: #ff4444;
+  color: white;
+  padding: 8px 14px;
+  font-size: 13px;
+}
+
+.btn-danger:hover:not(:disabled) {
+  background: #cc0000;
+}
+
+.btn-danger:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* 图标选择器 */
+.icon-picker {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  max-width: 100%;
+}
+
+.icon-option {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  font-size: 20px;
+  border: 2px solid var(--border-color);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: var(--bg-tertiary);
+}
+
+.icon-option:hover {
+  border-color: var(--accent-color);
+  background: rgba(0, 122, 255, 0.1);
+}
+
+.icon-option.selected {
+  border-color: var(--accent-color);
+  background: var(--accent-color);
+  box-shadow: 0 0 0 2px rgba(0, 122, 255, 0.2);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.modal-header h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.modal-close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: transparent;
+  border-radius: 8px;
+  cursor: pointer;
+  color: #999999;
+  transition: all 0.2s ease;
+}
+
+.modal-close:hover {
+  background: #f0f0f0;
+  color: #333333;
+}
+
+.modal-close svg {
+  width: 16px;
+  height: 16px;
+}
+
+.modal-body {
+  padding: 20px;
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-group:last-child {
+  margin-bottom: 0;
+}
+
+.form-group label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: #333333;
+  margin-bottom: 8px;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 14px;
+  transition: border-color 0.2s ease;
+}
+
+.form-group textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: monospace;
+  resize: vertical;
+  min-height: 120px;
+  transition: border-color 0.2s ease;
+  box-sizing: border-box;
+}
+
+.form-group textarea:focus {
+  outline: none;
+  border-color: #007aff;
+}
+
+.form-group textarea::placeholder {
+  color: #cccccc;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #007aff;
+}
+
+.form-group input::placeholder {
+  color: #cccccc;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 16px 20px;
+  border-top: 1px solid #e0e0e0;
+}
+
+.btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-cancel {
+  background: #f0f0f0;
+  color: #666666;
+}
+
+.btn-cancel:hover {
+  background: #e0e0e0;
+}
+
+.btn-confirm {
+  background: #007aff;
+  color: #ffffff;
+}
+
+.btn-confirm:hover {
+  background: #0066cc;
+}
+
+/* 空状态 */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  color: #999999;
+}
+
+.empty-state svg {
+  width: 64px;
+  height: 64px;
+  margin-bottom: 16px;
+}
+
+.empty-state p {
+  font-size: 14px;
+}
+
+/* 主题设置样式 */
+.radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.radio-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  padding: 10px 12px;
+  border-radius: 8px;
+  transition: background 0.2s ease;
+}
+
+.radio-label:hover {
+  background: var(--bg-tertiary);
+}
+
+.radio-label input[type="radio"] {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  margin: 0;
+}
+
+.radio-label span {
+  font-size: 14px;
+  color: var(--text-primary);
+}
+
+.time-input-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.time-input {
+  padding: 10px 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  font-size: 14px;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+.time-separator {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.form-hint {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 8px;
+  margin-bottom: 0;
+}
+
+#autoTimeGroup {
+  display: none;
+}
+
+#autoTimeGroup.show {
+  display: block;
+}
+
+/* 响应式 */
+@media (max-width: 768px) {
+  .header {
+    padding: 10px 16px;
+  }
+  
+  .header-center {
+    display: none;
+  }
+  
+  .config-card {
+    padding: 12px;
+  }
+  
+  .config-icon {
+    width: 36px;
+    height: 36px;
+    font-size: 20px;
+  }
+  
+  .config-name {
+    font-size: 14px;
+  }
+  
+  .config-url {
+    font-size: 11px;
+  }
+  
+  .config-status {
+    font-size: 10px;
+    padding: 3px 8px;
+  }
+}

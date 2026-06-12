@@ -1,0 +1,76 @@
+name: Build Tauri App
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Cache npm dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            node_modules
+            ~/.npm
+          key: ${{ runner.os }}-npm-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-npm-
+
+      - name: Cache Cargo dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            src-tauri/target
+          key: ${{ runner.os }}-cargo-${{ hashFiles('src-tauri/Cargo.toml') }}
+          restore-keys: |
+            ${{ runner.os }}-cargo-
+
+      - name: Install Tauri CLI
+        run: npm install -g @tauri-apps/cli
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build Tauri app
+        run: npx tauri build
+
+      - name: List build output
+        run: |
+          if (Test-Path "src-tauri/target/release/bat_r.exe") {
+            Write-Host "Found: src-tauri/target/release/bat_r.exe"
+          }
+          if (Test-Path "src-tauri/target/release/bundle") {
+            Get-ChildItem -Recurse "src-tauri/target/release/bundle" | Select-Object FullName
+          }
+
+      - name: Copy exe as bat-r2.exe
+        run: |
+          if (Test-Path "src-tauri/target/release/bat_r.exe") {
+            Copy-Item "src-tauri/target/release/bat_r.exe" "bat-r2.exe"
+          } else {
+            Write-Host "ERROR: bat_r.exe not found"
+            exit 1
+          }
+
+      - name: Upload bat-r2.exe
+        uses: actions/upload-artifact@v4
+        with:
+          name: bat-r2
+          path: bat-r2.exe

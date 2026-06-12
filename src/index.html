@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BAT_R</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- 顶部导航栏 -->
+    <header class="header">
+      <div class="header-left">
+
+        <span class="app-name">BAT_R</span>
+        <button class="nav-btn" id="settingsBtn" title="设置">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+          </svg>
+        </button>
+      </div>
+      
+      <!-- 顶部功能按钮 -->
+      <div class="header-center">
+        <button class="nav-btn run-bat-btn" id="runBatBtn" title="运行 run.bat">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="5 3 19 12 5 21 5 3"></polygon>
+          </svg>
+          <span class="btn-text">运行</span>
+        </button>
+        
+        <!-- 脚本控制按钮 -->
+        <button class="nav-btn control-btn start-btn" id="startScriptBtn" title="开始运行选中脚本" disabled>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="5 3 19 12 5 21 5 3"></polygon>
+          </svg>
+          <span class="btn-text">开始</span>
+        </button>
+        <button class="nav-btn control-btn stop-btn" id="stopScriptBtn" title="停止运行选中脚本" disabled>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="6" y="4" width="12" height="16"></rect>
+          </svg>
+          <span class="btn-text">停止</span>
+        </button>
+        
+        <button class="nav-btn" title="功能1">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 20h9"></path>
+            <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+          </svg>
+        </button>
+
+        <button class="nav-btn" title="主题切换" id="themeToggleBtn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+        </button>
+      </div>
+      
+      <!-- 添加按钮 -->
+      <div class="header-right">
+        <button class="add-btn" id="addConfigBtn" title="添加配置">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="12" y1="5" x2="12" y2="19"></line>
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+          </svg>
+        </button>
+      </div>
+    </header>
+    
+    <!-- 主题设置弹窗 -->
+    <div class="modal-overlay" id="themeModal">
+      <div class="modal">
+        <div class="modal-header">
+          <h3>主题设置</h3>
+          <button class="modal-close" id="closeThemeModal">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label>主题模式</label>
+            <div class="radio-group">
+              <label class="radio-label">
+                <input type="radio" name="themeMode" value="light" checked>
+                <span>☀️ 白天模式</span>
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="themeMode" value="dark">
+                <span>🌙 夜间模式</span>
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="themeMode" value="auto">
+                <span>🕐 自动切换</span>
+              </label>
+            </div>
+          </div>
+          <div class="form-group" id="autoTimeGroup">
+            <label>自动切换时间</label>
+            <div class="time-input-group">
+              <input type="time" id="darkStartTime" value="19:00" class="time-input">
+              <span class="time-separator">至</span>
+              <input type="time" id="darkEndTime" value="07:00" class="time-input">
+            </div>
+            <p class="form-hint">在指定时间范围内自动切换为夜间模式</p>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" id="themeCancelBtn">取消</button>
+          <button class="btn btn-primary" id="themeSaveBtn">保存</button>
+        </div>
+      </div>
+    </div>
+    
+    <!-- 配置列表 -->
+    <main class="main-content">
+      <div class="config-list" id="configList">
+        <!-- 配置项会动态生成 -->
+      </div>
+    </main>
+    
+    <!-- 添加配置弹窗 -->
+    <div class="modal-overlay" id="addModal">
+      <div class="modal">
+        <div class="modal-header">
+          <h3>添加配置</h3>
+          <button class="modal-close" id="closeModal">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label>名称</label>
+            <input type="text" id="configName" placeholder="请输入配置名称">
+          </div>
+          <div class="form-group">
+            <label>URL</label>
+            <input type="text" id="configUrl" placeholder="请输入URL地址">
+          </div>
+          <div class="form-group">
+            <label>图标</label>
+            <input type="text" id="configIcon" placeholder="输入emoji图标，如 🤖">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-cancel" id="cancelBtn">取消</button>
+          <button class="btn btn-confirm" id="confirmBtn">确认添加</button>
+        </div>
+      </div>
+    </div>
+    
+    <!-- 编辑配置弹窗 -->
+    <div class="modal-overlay" id="editModal">
+      <div class="modal resizable">
+        <div class="modal-header">
+          <h3>编辑配置</h3>
+          <button class="modal-close" id="closeEditModal">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" id="editId">
+          <div class="form-group">
+            <label>名称</label>
+            <input type="text" id="editName" placeholder="请输入配置名称">
+          </div>
+          <div class="form-group">
+            <label>文件夹路径</label>
+            <div class="folder-input-group">
+              <input type="text" id="editFolderPath" placeholder="请输入文件夹路径，如 C:\Scripts" value="C:\Users\bihai\Desktop\cla">
+              <button class="btn-refresh" id="refreshBatList" title="刷新列表">↻</button>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>选择脚本</label>
+            <div class="bat-list" id="batList">
+              <div class="bat-list-empty">请输入文件夹路径后点击刷新按钮</div>
+            </div>
+            <div class="script-actions" id="scriptActions">
+              <button class="btn btn-secondary" id="copyScriptBtn" disabled>复制脚本</button>
+              <button class="btn btn-secondary" id="renameScriptBtn" disabled>重命名脚本</button>
+              <button class="btn btn-danger" id="deleteScriptBtn" disabled>删除脚本</button>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>图标</label>
+            <div class="icon-picker" id="iconPicker">
+              <div class="icon-option" data-icon="🚀">🚀</div>
+              <div class="icon-option" data-icon="🤖">🤖</div>
+              <div class="icon-option" data-icon="⚡">⚡</div>
+              <div class="icon-option" data-icon="🔧">🔧</div>
+              <div class="icon-option" data-icon="📦">📦</div>
+              <div class="icon-option" data-icon="🚀">🚀</div>
+              <div class="icon-option" data-icon="🌟">🌟</div>
+              <div class="icon-option" data-icon="💡">💡</div>
+              <div class="icon-option" data-icon="🎯">🎯</div>
+              <div class="icon-option" data-icon="🔥">🔥</div>
+              <div class="icon-option" data-icon="⚙️">⚙️</div>
+              <div class="icon-option" data-icon="🎨">🎨</div>
+              <div class="icon-option" data-icon="🚁">🚁</div>
+              <div class="icon-option" data-icon="✈️">✈️</div>
+              <div class="icon-option" data-icon="🚗">🚗</div>
+              <div class="icon-option" data-icon="🛠️">🛠️</div>
+              <div class="icon-option" data-icon="🔑">🔑</div>
+              <div class="icon-option" data-icon="🎮">🎮</div>
+              <div class="icon-option" data-icon="📊">📊</div>
+              <div class="icon-option" data-icon="💻">💻</div>
+            </div>
+            <input type="hidden" id="editIcon" value="🤖">
+          </div>
+          <div class="form-group">
+            <label>脚本内容</label>
+            <textarea id="editNotes" placeholder="请选择或编辑 .bat 脚本内容..." rows="8"></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-cancel" id="editCancelBtn">取消</button>
+          <button class="btn btn-confirm" id="editConfirmBtn">确认修改</button>
+        </div>
+      </div>
+    </div>
+    
+    <!-- 重命名脚本弹窗 -->
+    <div class="modal-overlay" id="renameModal">
+      <div class="modal">
+        <div class="modal-header">
+          <h3>重命名脚本</h3>
+          <button class="modal-close" id="closeRenameModal">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" id="renameOldName">
+          <div class="form-group">
+            <label>新文件名</label>
+            <input type="text" id="renameNewName" placeholder="请输入新的脚本名称（不含.bat扩展名）">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-cancel" id="renameCancelBtn">取消</button>
+          <button class="btn btn-confirm" id="renameConfirmBtn">确认重命名</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <script src="app.js"></script>
+</body>
+</html>

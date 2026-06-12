@@ -1,0 +1,16 @@
+{
+  "name": "tauri-file-explorer",
+  "version": "1.0.0",
+  "description": "A Tauri app with file explorer and weather display",
+  "scripts": {
+    "dev": "tauri dev",
+    "build": "tauri build",
+    "tauri": "tauri",
+    "preview": "http-server src -p 8080"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^2",
+    "http-server": "^14.1.1",
+    "typescript": "^5.0.0"
+  }
+}

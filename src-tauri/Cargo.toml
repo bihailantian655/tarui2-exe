@@ -1,0 +1,21 @@
+[package]
+name = "bat_r"
+version = "1.0.0"
+description = "BAT_R - Batch script manager"
+authors = ["you"]
+edition = "2021"
+resolver = "2"
+
+[[bin]]
+name = "bat_r"
+path = "main.rs"
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = [] }
+tauri-plugin-shell = "2"
+tauri-plugin-fs = "2"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"

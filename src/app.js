@@ -216,7 +216,8 @@ async function openEditModal(id) {
   setIconPickerSelection(config.icon);
   document.getElementById('editNotes').value = '';
   if (folderPath) {
-    await loadBatFiles(folderPath, config.url);
+    const selectedFileName = config.url ? config.url.split('\\').pop() : '';
+    await loadBatFiles(folderPath, selectedFileName);
   } else {
     document.getElementById('batList').innerHTML = '<div class="bat-list-empty">\u8BF7\u8F93\u5165\u6587\u4EF6\u5939\u8DEF\u5F84\u540E\u70B9\u51FB\u5237\u65B0\u6309\u94AE</div>';
   }
@@ -501,8 +502,8 @@ function initAllEvents() {
     document.getElementById('addModal').classList.remove('show');
   });
 
-  document.getElementById('closeEditModal').addEventListener('click', () => { document.getElementById('editModal').classList.remove('show'); });
-  document.getElementById('editCancelBtn').addEventListener('click', () => { document.getElementById('editModal').classList.remove('show'); });
+  document.getElementById('closeEditModal').addEventListener('click', () => {});
+  document.getElementById('editCancelBtn').addEventListener('click', () => {});
 
   document.getElementById('refreshBatList').addEventListener('click', async () => {
     const folderPath = document.getElementById('editFolderPath').value.trim();
@@ -624,7 +625,11 @@ function initAllEvents() {
   });
 
   document.querySelectorAll('.modal-overlay').forEach(overlay => {
-    overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.classList.remove('show'); });
+    overlay.addEventListener('click', (e) => { 
+      if (e.target === overlay && !overlay.id.includes('editModal')) {
+        overlay.classList.remove('show'); 
+      }
+    });
   });
 
   document.getElementById('themeToggleBtn').addEventListener('click', () => { document.getElementById('themeModal').classList.add('show'); });

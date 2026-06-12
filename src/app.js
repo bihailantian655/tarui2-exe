@@ -502,8 +502,8 @@ function initAllEvents() {
     document.getElementById('addModal').classList.remove('show');
   });
 
-  document.getElementById('closeEditModal').addEventListener('click', () => {});
-  document.getElementById('editCancelBtn').addEventListener('click', () => {});
+  document.getElementById('closeEditModal').addEventListener('click', () => { document.getElementById('editModal').classList.remove('show'); });
+  document.getElementById('editCancelBtn').addEventListener('click', () => { document.getElementById('editModal').classList.remove('show'); });
 
   document.getElementById('refreshBatList').addEventListener('click', async () => {
     const folderPath = document.getElementById('editFolderPath').value.trim();
@@ -534,7 +534,6 @@ function initAllEvents() {
       saveConfigs();
       renderConfigList();
       document.getElementById('editModal').classList.remove('show');
-      alert('\u914D\u7F6E\u5DF2\u4FDD\u5B58\uFF01');
     }
   });
 

@@ -181,10 +181,16 @@ body.dark-mode {
   border-style: dashed;
 }
 
-.config-card.drag-over {
-  border-color: var(--accent-color);
-  border-width: 2px;
-  box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.15);
+.drag-placeholder {
+  border: 2px dashed var(--accent-color);
+  border-radius: 12px;
+  background: rgba(0, 122, 255, 0.05);
+  transition: height 0.15s ease;
+}
+
+.config-card.dragging {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  opacity: 0.9;
 }
 
 @keyframes pulse {

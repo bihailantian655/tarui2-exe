@@ -1,6 +1,6 @@
 let configs = [];
 let runningProcesses = {};
-let dragSrcIndex = null;
+let dragState = null;
 
 function getTauriInvoke() {
   try {
@@ -72,8 +72,8 @@ function renderConfigList() {
     const scriptName = config.url ? config.url.split('\\').pop() : '\u672A\u9009\u62E9\u811A\u672C';
     const folderPath = config.folderPath || (config.url ? config.url.substring(0, config.url.lastIndexOf('\\')) : '');
     return `
-    <div class="config-card" data-id="${config.id}" data-index="${index}" draggable="true">
-      <span class="config-drag-handle" title="\u62D6\u52A8\u6392\u5E8F">\u22EE</span>
+    <div class="config-card" data-id="${config.id}" data-index="${index}">
+      <span class="config-drag-handle" data-drag="true" title="\u62D6\u52A8\u6392\u5E8F">\u22EE</span>
       <div class="config-icon">${config.icon}</div>
       <div class="config-info">
         <div class="config-name">${config.name}</div>
@@ -91,54 +91,94 @@ function renderConfigList() {
     </div>`;
   }).join('');
 
-  container.querySelectorAll('.config-card').forEach(card => {
-    card.addEventListener('dragstart', handleDragStart);
-    card.addEventListener('dragover', handleDragOver);
-    card.addEventListener('dragenter', handleDragEnter);
-    card.addEventListener('dragleave', handleDragLeave);
-    card.addEventListener('drop', handleDrop);
-    card.addEventListener('dragend', handleDragEnd);
+  container.querySelectorAll('.config-drag-handle').forEach(handle => {
+    handle.addEventListener('mousedown', onDragMouseDown);
   });
 }
 
-function handleDragStart(e) {
-  dragSrcIndex = parseInt(this.dataset.index);
-  this.classList.add('dragging');
-  e.dataTransfer.effectAllowed = 'move';
-  e.dataTransfer.setData('text/plain', this.dataset.index);
-}
-
-function handleDragOver(e) {
+function onDragMouseDown(e) {
   e.preventDefault();
-  e.dataTransfer.dropEffect = 'move';
+  e.stopPropagation();
+  const card = e.target.closest('.config-card');
+  if (!card) return;
+  const container = document.getElementById('configList');
+  const cards = Array.from(container.querySelectorAll('.config-card'));
+  const startIndex = parseInt(card.dataset.index);
+  const cardRect = card.getBoundingClientRect();
+  const offsetY = e.clientY - cardRect.top;
+  const cardHeight = cardRect.height + 12;
+
+  const placeholder = document.createElement('div');
+  placeholder.className = 'drag-placeholder';
+  placeholder.style.height = cardHeight + 'px';
+  card.parentNode.insertBefore(placeholder, card);
+
+  card.classList.add('dragging');
+  card.style.position = 'fixed';
+  card.style.width = cardRect.width + 'px';
+  card.style.left = cardRect.left + 'px';
+  card.style.top = (e.clientY - offsetY) + 'px';
+  card.style.zIndex = '9999';
+  card.style.pointerEvents = 'none';
+
+  dragState = { card, placeholder, startIndex, offsetY, cards };
+
+  document.addEventListener('mousemove', onDragMouseMove);
+  document.addEventListener('mouseup', onDragMouseUp);
 }
 
-function handleDragEnter(e) {
-  e.preventDefault();
-  this.classList.add('drag-over');
-}
+function onDragMouseMove(e) {
+  if (!dragState) return;
+  dragState.card.style.top = (e.clientY - dragState.offsetY) + 'px';
 
-function handleDragLeave(e) {
-  this.classList.remove('drag-over');
-}
+  const container = document.getElementById('configList');
+  const allCards = Array.from(container.querySelectorAll('.config-card'));
+  let insertBefore = null;
 
-function handleDrop(e) {
-  e.preventDefault();
-  this.classList.remove('drag-over');
-  const targetIndex = parseInt(this.dataset.index);
-  if (dragSrcIndex !== null && dragSrcIndex !== targetIndex) {
-    const movedItem = configs.splice(dragSrcIndex, 1)[0];
-    configs.splice(targetIndex, 0, movedItem);
-    saveConfigs();
-    renderConfigList();
+  for (const c of allCards) {
+    if (c === dragState.card) continue;
+    const rect = c.getBoundingClientRect();
+    const mid = rect.top + rect.height / 2;
+    if (e.clientY < mid) {
+      insertBefore = c;
+      break;
+    }
+  }
+
+  if (insertBefore) {
+    container.insertBefore(dragState.placeholder, insertBefore);
+  } else {
+    container.appendChild(dragState.placeholder);
   }
 }
 
-function handleDragEnd(e) {
-  document.querySelectorAll('.config-card').forEach(c => {
-    c.classList.remove('dragging', 'drag-over');
-  });
-  dragSrcIndex = null;
+function onDragMouseUp(e) {
+  document.removeEventListener('mousemove', onDragMouseMove);
+  document.removeEventListener('mouseup', onDragMouseUp);
+  if (!dragState) return;
+
+  const { card, placeholder, startIndex } = dragState;
+  card.classList.remove('dragging');
+  card.style.position = '';
+  card.style.width = '';
+  card.style.left = '';
+  card.style.top = '';
+  card.style.zIndex = '';
+  card.style.pointerEvents = '';
+
+  const container = document.getElementById('configList');
+  const allElements = Array.from(container.children);
+  const placeholderIndex = allElements.indexOf(placeholder);
+
+  if (placeholderIndex !== -1 && placeholderIndex !== startIndex) {
+    const movedItem = configs.splice(startIndex, 1)[0];
+    configs.splice(placeholderIndex > startIndex ? placeholderIndex - 1 : placeholderIndex, 0, movedItem);
+    saveConfigs();
+  }
+
+  if (placeholder.parentNode) placeholder.parentNode.removeChild(placeholder);
+  dragState = null;
+  renderConfigList();
 }
 
 function deleteConfig(id) {
@@ -159,7 +199,6 @@ async function runScript(id) {
   }
   try {
     await tauriInvoke('execute_script', { path: filePath });
-    alert('\u811A\u672C\u5DF2\u542F\u52A8\uFF01');
   } catch (error) {
     alert('\u6267\u884C\u811A\u672C\u5931\u8D25: ' + (typeof error === 'string' ? error : String(error)));
   }
@@ -293,7 +332,6 @@ async function runSelectedScript() {
       runningProcesses[configId] = result.pid;
       selectedCard.classList.add('running');
       updateControlButtons();
-      alert('\u811A\u672C\u5DF2\u542F\u52A8\uFF0C\u8FDB\u7A0BID: ' + result.pid);
     }
   } catch (error) {
     alert('\u8FD0\u884C\u811A\u672C\u5931\u8D25: ' + (typeof error === 'string' ? error : String(error)));
@@ -328,7 +366,6 @@ async function stopSelectedScript() {
     delete runningProcesses[configId];
     selectedCard.classList.remove('running');
     updateControlButtons();
-    alert('\u811A\u672C\u5DF2\u505C\u6B62');
   } catch (error) {
     alert('\u505C\u6B62\u811A\u672C\u5931\u8D25: ' + (typeof error === 'string' ? error : String(error)));
   }
@@ -508,7 +545,6 @@ function initAllEvents() {
       try { appDir = await tauriInvoke('get_exe_dir'); } catch (e) { appDir = '.'; }
       const runBatPath = appDir + '\\run.bat';
       await tauriInvoke('execute_script', { path: runBatPath });
-      alert('\u6B63\u5728\u542F\u52A8: ' + runBatPath);
     } catch (error) {
       alert('\u542F\u52A8\u5931\u8D25: ' + (typeof error === 'string' ? error : String(error)));
     }
